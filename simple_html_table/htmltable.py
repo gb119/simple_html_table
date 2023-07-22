@@ -251,7 +251,7 @@ class Row(HTMLObjectMixin, MutableSequence):
                 content = table_contents
             else:
                 content = table_contents[row, ix]
-                self._cols.append(Cell(ix, self, table, classes=cell_classes, attrs=cell_attrs, content=content))
+            self._cols.append(Cell(ix, self, table, classes=cell_classes, attrs=cell_attrs, content=content))
 
     @property
     def location(self) -> int:
@@ -438,11 +438,12 @@ if __name__ == "__main__":
         cell.classes = "table_th"
 
     result = table.render()
-    print(result)
+    print(result,"\n")
 
     def content_func(cell: Cell) -> str:
         """Callback function to fill in the table."""
-        return contents[cell.row, cell.col]
+        row, col = cell.location
+        return contents[row][col]
 
     table2 = Table((3, 4), table_contents=content_func)
     result = table2.render()

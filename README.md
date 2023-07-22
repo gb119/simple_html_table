@@ -26,15 +26,17 @@ strings.:
         cell.classes = "table_th"
 
     result = table.render()
-    print(result)
+    print(result,"\n")
 
     def content_func(cell: Cell) -> str:
         """Callback function to fill in the table."""
-        return contents[cell.row, cell.col]
+        row, col = cell.location
+        return contents[row][col]
 
     table2 = Table((3, 4), table_contents=content_func)
     result = table2.render()
     print(result)
+
 
 ### Output
 
@@ -56,12 +58,25 @@ strings.:
     		<td class='html_td'>(2,4)</td>
     	</tr>
     </table>
+
     <table class='html_table'>
     	<tr class='html_tr'>
+    		<td class='html_td'>Head 1</td>
+    		<td class='html_td'>Head 2</td>
+    		<td class='html_td'>Head 3</td>
+    		<td class='html_td'>Head 4</td>
     	</tr>
     	<tr class='html_tr'>
+    		<td class='html_td'>(1,1)</td>
+    		<td class='html_td'>(1,2)</td>
+    		<td class='html_td'>(1,3)</td>
+    		<td class='html_td'>(1,4)</td>
     	</tr>
     	<tr class='html_tr'>
+    		<td class='html_td'>(2,1)</td>
+    		<td class='html_td'>(2,2)</td>
+    		<td class='html_td'>(2,3)</td>
+    		<td class='html_td'>(2,4)</td>
     	</tr>
     </table>
 
