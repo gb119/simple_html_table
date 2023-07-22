@@ -36,9 +36,9 @@ strings.:
     result = table2.render()
     print(result)
 
-### Output:
+### Output
 
-<pre>
+>
     <table class='html_table'>
     	<tr class='html_tr'>
     		<th class='table_th' rowspan=3>Head 1</th>
@@ -64,7 +64,6 @@ strings.:
     	<tr class='html_tr'>
     	</tr>
     </table>
-</pre>
 
 Table and Row objects implement mutable sequence interfaces, so can be indexed. A Table will except being indexed with
 a single integer to return a Row or with a tuple of two integers to return a Cell. A Row can be indexed to return Cell
