@@ -1,13 +1,12 @@
 {% set name = "simple_html_table" %}
-{% set version = "0.1.0" %}
+{% set version = "0.2.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/simple_html_table-{{ version }}.tar.gz
-  sha256: 358234ae2d9bfcbe2f567e3c8b5c0879bd383265c1043af94e4574bd6d270b45
+  path: ../
 
 build:
   noarch: python

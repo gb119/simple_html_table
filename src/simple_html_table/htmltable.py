@@ -7,6 +7,7 @@ Created on Sat Jun 10 11:24:08 2023
 @author: phygbu
 """
 from typing import List, Dict, Tuple, Union, Optional
+from collections.abc import Iterable
 
 from collections.abc import MutableSequence
 
@@ -106,6 +107,39 @@ class HTMLObjectMixin(object):
         """Return the HTML classes as a list of strings."""
         return self._classes
 
+    @property
+    def content(self) -> str:
+        """Return the contents of the html tag."""
+        return self._content
+
+    @content.setter
+    def content(self, value: str) -> None:
+        if not isinstance(value, str):
+            value = str(value)
+        self._content = value
+
+
+class HTMLTuple(tuple):
+
+    """A holder for an immutable collection of HTMLObjects."""
+
+    def __init__(self, *args, location=None):
+        """Pull out the location attribute."""
+        super().__init__()
+        self.location = location
+
+    @property
+    def header(self) -> List[bool]:
+        """Get the Header attribute on the contents."""
+        return [x.header for x in self]
+
+    @header.setter
+    def header(self, value: Union[bool, List[bool]]) -> None:
+        if not isinstance(value, Iterable):
+            value = [value] * len(self)
+        for element, header in zip(self, value):
+            element.header = value
+
 
 class Table(HTMLObjectMixin, MutableSequence):
 
@@ -175,7 +209,11 @@ class Table(HTMLObjectMixin, MutableSequence):
     def __getitem__(self, item: Union[Tuple[int, int], int]) -> Union["Cell", "Row"]:
         if isinstance(item, tuple):
             r, c = item
+            if isinstance(r, slice):
+                return HTMLTuple([self._rows[ix][c] for ix in range(*r.indices(len(self._rows)))], location=c)
             return self._rows[r][c]
+        if isinstance(item, slice):
+            return HTMLTuple([self._rows[ix] for ix in range(*item.indices(len(self._rows)))], location=None)
         return self._rows[item]
 
     def __setitem__(self, item: Union[Tuple[int, int], int], val: Union["Cell", "Row", "str"]) -> None:
@@ -438,7 +476,7 @@ if __name__ == "__main__":
         cell.classes = "table_th"
 
     result = table.render()
-    print(result,"\n")
+    print(result, "\n")
 
     def content_func(cell: Cell) -> str:
         """Callback function to fill in the table."""
